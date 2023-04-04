@@ -1,1 +1,40 @@
 @import './base.scss';
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    padding: 24px 0;
+    background-color: $c-light-gray;
+
+    @media (max-width: $tablet-max-width) {
+        padding: 18px 0;
+    }
+}
+
+.content {
+    flex-grow: 1;
+    width: 100%;
+    background-color: $c-white-mute;
+}
+
+.footer {
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    padding: 24px 0;
+    background-color: $c-light-gray;
+}
+
