@@ -1,0 +1,203 @@
+{
+    "0": {
+        "ё": {
+            "hand": "left",
+            "finger": 5
+        },
+        "1": {
+            "hand": "left",
+            "finger": 5
+        },
+        "2": {
+            "hand": "left",
+            "finger": 5
+        },
+        "3": {
+            "hand": "left",
+            "finger": 4
+        },
+        "4": {
+            "hand": "left",
+            "finger": 3
+        },
+        "5" : {
+            "hand": "left",
+            "finger": 2
+        },
+        "6": {
+            "hand": "left",
+            "finger": 2
+        },
+        "7": {
+            "hand": "right",
+            "finger": 2
+        },
+        "8": {
+            "hand": "right",
+            "finger": 3
+        },
+        "9": {
+            "hand": "right",
+            "finger": 4
+        },
+        "0": {
+            "hand": "right",
+            "finger": 5
+        },
+        "-": {
+            "hand": "right",
+            "finger": 5
+        },
+        "=": {
+            "hand": "right",
+            "finger": 5
+        }
+    },
+    "1": {
+        "й": {
+            "hand": "left",
+            "finger": 5
+        },
+        "ц": {
+            "hand": "left",
+            "finger": 4
+        },
+        "у": {
+            "hand": "left",
+            "finger": 3
+        },
+        "к": {
+            "hand": "left",
+            "finger": 2
+        },
+        "е": {
+            "hand": "left",
+            "finger": 2
+        },
+        "н": {
+            "hand": "right",
+            "finger": 2
+        }
+        , "г": {
+            "hand": "right",
+            "finger": 2
+        },
+        "ш": {
+            "hand": "right",
+            "finger": 3
+        },
+        "щ": {
+            "hand": "right",
+            "finger": 4
+        },
+        "з": {
+            "hand": "right",
+            "finger": 5
+        },
+        "х": {
+            "hand": "right",
+            "finger": 5
+        },
+        "ъ": {
+            "hand": "right",
+            "finger": 5
+        },
+        "\\": {
+            "hand": "right",
+            "finger": 5
+        }
+    },
+    "2": {
+        "ф": {
+            "hand": "left",
+            "finger": 5
+        },
+        "ы": {
+            "hand": "left",
+            "finger": 4
+        },
+        "в": {
+            "hand": "left",
+            "finger": 3
+        },
+        "а": {
+            "hand": "left",
+            "finger": 2
+        },
+        "п": {
+            "hand": "left",
+            "finger": 2
+        },
+        "р": {
+            "hand": "right",
+            "finger": 2
+        },
+        "о": {
+            "hand": "right",
+            "finger": 2
+        },
+        "л": {
+            "hand": "right",
+            "finger": 3
+        },
+        "д": {
+            "hand": "right",
+            "finger": 4
+        },
+        "ж": {
+            "hand": "right",
+            "finger": 5
+        }, "э": {
+            "hand": "right",
+            "finger": 5
+        }
+    },
+    "3": {
+        "я": {
+            "hand": "left",
+            "finger": 5
+        },
+        "ч": {
+            "hand": "left",
+            "finger": 4
+        },
+        "с": {
+            "hand": "left",
+            "finger": 3
+        },
+        "м": {
+            "hand": "left",
+            "finger": 2
+        },
+        "и": {
+            "hand": "left",
+            "finger": 2
+        },
+        "т": {
+            "hand": "right",
+            "finger": 2
+        },
+        "ь": {
+            "hand": "right",
+            "finger": 2
+        },
+        "б": {
+            "hand": "right",
+            "finger": 3
+        },
+        "ю": {
+            "hand": "right",
+            "finger": 4
+        },
+        ".": {
+            "hand": "right",
+            "finger": 5
+        }
+    },
+    "4": {
+        "space": {
+            "hand": "left",
+            "finger": 1
+        }
+    }
+}

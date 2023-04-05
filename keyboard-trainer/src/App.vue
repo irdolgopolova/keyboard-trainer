@@ -3,19 +3,31 @@
         <div class="container">
             <h2 class="header__title">Тренировочное задание</h2>
 
-            <div class="header__statictic">
-                <div class="header__statictic__item">
-                    <speedIcon />
-                    <span class="header__statictic__item__value">
-                        0
-                    </span>
+            <div class="header__config">
+                <div class="header__statictic">
+                    <div class="header__statictic__item">
+                        <speedIcon />
+                        <span class="header__statictic__item__value">
+                            0
+                        </span>
+                    </div>
+
+                    <div class="header__statictic__item">
+                        <errorsIcon />
+                        <span class="header__statictic__item__value">
+                            0
+                        </span>
+                    </div>
                 </div>
 
-                <div class="header__statictic__item">
-                    <errorsIcon />
-                    <span class="header__statictic__item__value">
-                        0
-                    </span>
+                <div class="header__focus">
+                    <label class="header__focus__label">
+                        <input
+                            class="header__focus__input"
+                            type="checkbox"
+                        />
+                        Фокус
+                    </label>
                 </div>
             </div>
         </div>
@@ -24,12 +36,7 @@
         <div class="container">
             <div class="task-box">
                 <p class="task-box__text">
-                    Для современного мира новая модель организационной деятельности
-                    требует от нас анализа новых предложений. Равным образом, новая
-                    модель организационной деятельности является качественно новой
-                    ступенью дальнейших направлений развития. В рамках спецификации
-                    современных стандартов, явные признаки победы институционализации
-                    будут объявлены нарушающими общечеловеческие нормы этики и морали.
+                    {{ text }}
                 </p>
             </div>
 
@@ -39,47 +46,16 @@
                 </div>
 
                 <div class="interactive-box__keyboard">
-                    <div class="interactive-box__keyboard__key">
-                        ё
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        1
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        2
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        3
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        4
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        5
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        6
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        7
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        8
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        9
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        0
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        -
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        =
-                    </div>
-                    <div class="interactive-box__keyboard__key">
-                        Backspace
+                    <div
+                        v-for="(keys, index) in arrayKey" :key="index"
+                        class="interactive-box__keyboard__row"
+                    >
+                        <div
+                            v-for="(key, index) in keys" :key="index"
+                            class="interactive-box__keyboard__key"
+                        >
+                            {{ index }}
+                        </div>
                     </div>
                 </div>
 
@@ -101,12 +77,45 @@ import errorsIcon from "./components/icons/errorsIcon.vue"
 import leftEmpty from "./components/icons/hands/leftEmpty.vue"
 import rightEmpty from "./components/icons/hands/rightEmpty.vue"
 
+import arrayKey from "./components/keyboard/listKeys.json"
+
 export default {
   components: {
     speedIcon,
     errorsIcon,
     leftEmpty,
     rightEmpty
+  },
+  data() {
+    return {
+        text: "",
+        arrayKey: arrayKey,
+    }
+  },
+  methods: {
+    getTextData() {
+        fetch("https://fish-text.ru/get", {
+            type:"sentence",
+            number:1,
+            format:"json"
+        })
+            .then(responce => responce.json())
+            .then(data => {
+                if (data.status == "success") {
+                    this.text = data.text
+                } else {
+                    console.log('error', data.status)
+                }
+            })
+            .catch(error => console.log('error', error))
+
+    }
+  },
+  created() {
+    this.getTextData()
+  },
+  mounted() {
+    console.log('arrayKey', arrayKey)
   }
 }
 </script>
@@ -124,6 +133,13 @@ export default {
 
     &__title {
         @extend .title;
+    }
+
+    &__config {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     &__statictic {
@@ -152,7 +168,18 @@ export default {
                 color: $c-gray;
             }
         }
+    }
 
+    &__focus {
+        width: 100%;
+        max-width: 150px;
+
+        margin: 0 0 0 52px;
+
+        &__label {
+            @extend .text;
+            color: $c-gray;
+        }
     }
 }
 
@@ -184,8 +211,7 @@ export default {
 
     &__keyboard {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
 
         width: 100%;
@@ -193,6 +219,14 @@ export default {
 
         @media (max-width: $tablet-max-width) {
             max-width: 900px;
+        }
+
+        &__row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            width: 100%;
         }
 
         &__key {
