@@ -66,13 +66,13 @@ body {
       line-height: 20px;
   }
 
-  &__typed {
+  &__current {
       font-weight: 700;
       color: $c-dark-blue;
       text-decoration-line: underline;
   }
 
-  &__finished {
+  &__correctly {
       color: $c-light-gray;
   }
 }
