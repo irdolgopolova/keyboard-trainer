@@ -8,33 +8,97 @@
                     <div class="header__statictic__item">
                         <speedIcon />
                         <span class="header__statictic__item__value">
-                            0
+                            {{ successSpeed }}
+                            <span
+                                class="header__statictic__item__value__decription"
+                            >
+                                знак/мин
+                            </span>
                         </span>
                     </div>
 
                     <div class="header__statictic__item">
                         <errorsIcon />
                         <span class="header__statictic__item__value">
-                            0
+                            {{ errorsCount }}
                         </span>
                     </div>
                 </div>
 
+
                 <div class="header__focus">
-                    <label class="header__focus__label">
-                        <input
-                            class="header__focus__input"
-                            type="checkbox"
-                        />
+                    <input
+                        class="header__focus__input"
+                        type="checkbox"
+                        id="focus"
+                        v-model="focusMode"
+                        @change="changeFocusMode"
+                    />
+                    <label
+                        class="header__focus__label"
+                        for="focus"
+                    >
                         Фокус
                     </label>
                 </div>
             </div>
         </div>
     </header>
-    <main class="content">
+    <main :class="[
+            'content',
+            {'blur' : endTask }
+        ]"
+    >
         <div class="container">
-            <div class="task-box">
+
+            <div
+                v-if="endTask"
+                class="ending-modal"
+            >
+                <header class="ending-modal__header">
+                    <h2 class="ending-modal__header__title">
+                        Вы завершили задание
+                    </h2>
+                </header>
+                <main class="ending-modal__body">
+                    <p class="ending-modal__body__stitistics-title">
+                        Количество символов
+                        <span
+                            class="ending-modal__body__stitistics-title__value"
+                        >
+                            {{ totalLetters }}
+                        </span>
+                    </p>
+                    <p class="ending-modal__body__stitistics-title">
+                        Средняя скорость
+                        <span
+                            class="ending-modal__body__stitistics-title__value"
+                        >
+                            {{ averageSpeed }}
+                        </span>
+                    </p>
+                    <p class="ending-modal__body__stitistics-title">
+                        Ошибок
+                        <span
+                            class="ending-modal__body__stitistics-title__value"
+                        >
+                            {{ errorsCount }}
+                        </span>
+                    </p>
+                    <button
+                        class="ending-modal__body__btn"
+                        @click="startNextTask"
+                    >
+                        Следующее задание
+                    </button>
+                </main>
+            </div>
+
+            <div :class="[
+                    'task-box',
+                    {'task-box__error' :  error}
+                ]"
+            >
                 <p class="task-box__text">
                     <span class="task-box__text__correctly">
                        {{ correctlyLetters.join('') }}
@@ -48,8 +112,11 @@
                 </p>
             </div>
 
-            <div class="interactive-box">
-                <div class="interactive-box__left-hand">
+            <div
+                v-if="focusMode === false"
+                class="interactive-box"
+            >
+                <div class="interactive-box__hand">
                     <leftEmpty v-if="isLeftEmpty" />
                     <leftLittle v-if="currentFinger === 'left_5'"/>
                     <leftRing v-if="currentFinger === 'left_4'"/>
@@ -74,7 +141,8 @@
                                 {'green' : (key.hand === 'left' && key.finger === 3) || (key.hand === 'right' && key.finger === 4)},
                                 {'blue' : (key.hand === 'left' && key.finger === 2) || (key.hand === 'right' && key.finger === 5)},
                                 {'brown' : (key.hand === 'left' && key.finger === 1) || (key.hand === 'right' && key.finger === 1)},
-                                {'active' : isCurrent(index, key)}
+                                {'active' : isCurrent(index, key)},
+                                {'error' : isCurrent(index, key) && error }
                             ]"
                         >
                             {{ index }}
@@ -82,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="interactive-box__right-hand">
+                <div class="interactive-box__hand">
                     <rightEmpty v-if="isRightEmpty"/>
                     <rightLittle v-if="currentFinger === 'right_5'"/>
                     <rightRing v-if="currentFinger === 'right_4'"/>
@@ -93,8 +161,11 @@
             </div>
         </div>
     </main>
+
     <footer class="footer">
-        <h2 class="title">Мастер класс Клавиатурный тренажер на Vue.js</h2>
+        <div class="container">
+            <h2 class="title">Мастер класс Клавиатурный тренажер на Vue.js</h2>
+        </div>
     </footer>
 </template>
 
@@ -143,22 +214,43 @@ export default {
         currentLetter: '',
         currentFinger: 0,
         arrayKey: arrayKey,
-        fingers: {
-            5: 'Litle',
-            4: 'Litle',
-            3: 'Litle',
-            2: 'Litle',
-            1: 'Litle',
-        }
+        error: false,
+        errorsCount: 0,
+        successCount: 0,
+        focusMode: false,
+        endTask: false,
     }
   },
   computed: {
     isLeftEmpty() {
-        return this.currentFinger.match(/right/i);
+        return this.currentFinger ? this.currentFinger.match(/right/i) : true
     },
     isRightEmpty() {
-        return this.currentFinger.match(/left/i);
-    }
+        return this.currentFinger ? this.currentFinger.match(/left/i) : true
+    },
+    successSpeed() {
+        if (this.successCount === 0) return 0
+
+        if (this.successCount === 1) {
+            sessionStorage.setItem('startTime', new Date().getTime())
+        }
+
+        let startTime = +sessionStorage.getItem('startTime')
+        let currentTime = new Date().getTime()
+        let leftTimeinMin = ((currentTime - startTime) / 60000).toFixed(2)
+
+        return Math.floor(this.successCount / (leftTimeinMin === 0 ? 1 : leftTimeinMin))
+    },
+    totalLetters() {
+        return this.correctlyLetters.length
+    },
+    averageSpeed() {
+        let startTime = +sessionStorage.getItem('startTime')
+        let currentTime = new Date().getTime()
+        let leftTimeinMin = ((currentTime - startTime) / 60000).toFixed(2)
+
+        return Math.floor(this.successCount / (leftTimeinMin === 0 ? 1 : leftTimeinMin))
+    },
   },
   methods: {
     getTextData() {
@@ -176,32 +268,62 @@ export default {
             })
             .catch(error => console.log('error', error))
     },
-    test(e) {
+    pressKey(e) {
         if (e.key === this.currentLetter) {
+            this.successCount++
+
             this.correctlyLetters.push(this.currentLetter)
-            this.currentLetter = this.letters.shift()
+
+            if (this.letters.length > 0) {
+                this.currentLetter = this.letters.shift()
+            } else {
+                this.endTask = true
+            }
+        } else if (
+            this.error === false
+            && this.successCount > 0
+        ) {
+            this.error = true
+            this.errorsCount++
+
+            setTimeout(() => this.error = false, 500)
         }
-        // Добавить обработку неправильного нажатия
     },
     isCurrent(key, keyData) {
-        if (key === 'space') {
-            key = ' '
+        let keys = (key === 'space') ? [' '] : key.split(' ')
+
+        if (keys[0] === 'space') {
+            console.log('keys[0]', keys[0])
         }
 
-        let isCurrentKey = (key === this.currentLetter.toLowerCase())
+        let isCurrentKey = keys.includes(this.currentLetter.toLowerCase())
 
         if (isCurrentKey) {
             this.currentFinger = `${keyData.hand}_${keyData.finger}`
         }
 
         return isCurrentKey
-    }
+    },
+    changeFocusMode(event) {
+        event.target.blur()
+    },
+    startNextTask() {
+        this.getTextData()
+
+        sessionStorage.removeItem('startTime')
+
+        this.correctlyLetters = []
+        this.errorsCount = 0
+        this.successCount = 0
+
+        this.endTask = false
+    },
   },
   created() {
     this.getTextData()
   },
   mounted() {
-    document.addEventListener('keyup', this.test)
+    document.addEventListener('keyup', this.pressKey)
   }
 }
 </script>
@@ -209,160 +331,4 @@ export default {
 <style lang="scss" scoped>
 @import './assets/base.scss';
 
-.header {
-    .container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__title {
-        @extend .title;
-    }
-
-    &__config {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__statictic {
-        width: 100%;
-        max-width: 200px;
-
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-
-        &__item {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-
-            &:not(:last-child) {
-                margin-right: 48px;
-            }
-
-            &__value {
-                @extend .text;
-
-                margin-left: 16px;
-                color: $c-gray;
-            }
-        }
-    }
-
-    &__focus {
-        width: 100%;
-        max-width: 150px;
-
-        margin: 0 0 0 52px;
-
-        &__label {
-            @extend .text;
-            color: $c-gray;
-        }
-    }
-}
-
-.task-box {
-    padding: 24px;
-    margin: 80px auto;
-
-    width: 100%;
-    max-width: 1000px;
-
-    border: 2px solid $c-gray;
-    border-radius: $border-radius;
-
-    &__text {
-        @extend .text;
-
-        &__correctly {
-            @extend .text__correctly;
-        }
-
-        &__current {
-            @extend .text__current;
-        }
-    }
-}
-
-.interactive-box {
-    margin: 80px auto;
-
-    width: 100%;
-    max-width: 1400px;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    &__keyboard {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        width: 100%;
-        max-width: 1000px;
-
-        @media (max-width: $tablet-max-width) {
-            max-width: 900px;
-        }
-
-        &__row {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-
-            width: 100%;
-        }
-
-        &__key {
-            @extend .keyboard__key;
-
-            padding: 2px;
-            margin: 8px 4px;
-
-            width: 100%;
-            max-width: 80px;
-
-            border: 1px solid $c-gray;
-            border-radius: $border-radius;
-        }
-
-        .space {
-            max-width: 520px;
-        }
-
-        .pink {
-            background-color: $c-pink;
-        }
-
-        .yellow {
-            background-color: $c-yellow;
-        }
-
-        .brown {
-            background-color: $c-brown;
-        }
-
-        .green {
-            background-color: $c-green;
-        }
-
-        .blue {
-            background-color: $c-blue;
-        }
-
-        .active {
-            outline: 3px solid $c-red;
-        }
-    }
-}
 </style>

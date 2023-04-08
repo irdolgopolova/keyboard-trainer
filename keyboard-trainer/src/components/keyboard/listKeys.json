@@ -1,5 +1,59 @@
 {
     "0": {
+        "ё": {
+            "hand": "left",
+            "finger": 5
+        },
+        "1 !": {
+            "hand": "left",
+            "finger": 5
+        },
+        "2 \"": {
+            "hand": "left",
+            "finger": 5
+        },
+        "3 №": {
+            "hand": "left",
+            "finger": 4
+        },
+        "4 ;": {
+            "hand": "left",
+            "finger": 3
+        },
+        "5 %": {
+            "hand": "left",
+            "finger": 2
+        },
+        "6 :": {
+            "hand": "left",
+            "finger": 2
+        },
+        "7 ?": {
+            "hand": "right",
+            "finger": 2
+        },
+        "8 *": {
+            "hand": "right",
+            "finger": 3
+        },
+        "9 (": {
+            "hand": "right",
+            "finger": 4
+        },
+        "0 )": {
+            "hand": "right",
+            "finger": 5
+        },
+        "-": {
+            "hand": "right",
+            "finger": 5
+        },
+        "=": {
+            "hand": "right",
+            "finger": 5
+        }
+    },
+    "1": {
         "й": {
             "hand": "left",
             "finger": 5
@@ -49,7 +103,7 @@
             "finger": 5
         }
     },
-    "1": {
+    "2": {
         "ф": {
             "hand": "left",
             "finger": 5
@@ -95,7 +149,7 @@
             "finger": 5
         }
     },
-    "2": {
+    "3": {
         "я": {
             "hand": "left",
             "finger": 5
@@ -132,12 +186,12 @@
             "hand": "right",
             "finger": 4
         },
-        ".": {
+        ". ,": {
             "hand": "right",
             "finger": 5
         }
     },
-    "3": {
+    "4": {
         "space": {
             "hand": "left",
             "finger": 1
