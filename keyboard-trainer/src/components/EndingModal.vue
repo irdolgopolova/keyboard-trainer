@@ -18,7 +18,6 @@
                 </span>
             </p>
 
-            <!-- для кнопки нужны стили -->
             <button
                 class="ending-modal__body__btn"
                 @click="startNextTask"

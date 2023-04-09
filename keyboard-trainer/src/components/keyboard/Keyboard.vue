@@ -4,7 +4,6 @@
             v-for="(keys, index) in arrayKey" :key="index"
             class="interactive-box__keyboard__row"
         >
-        <!-- вынести в функции -->
             <div
                 v-for="(key, index) in keys" :key="index"
                 :class="[

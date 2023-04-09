@@ -29,35 +29,56 @@ export default {
         Hand,
         Keyboard
     },
+    props: {
+        successCount: Number,
+        letters: Array,
+        correctlyLetters: Array,
+        currentLetter: String,
+        errorsCount: Number,
+        error: Boolean,
+        endTask: Boolean,
+    },
     data() {
         return {
             currentHand: "left",
             currentFinger: 0,
         }
     },
+    emits: [
+        'update:successCount',
+        'update:letters',
+        'update:correctlyLetters',
+        'update:currentLetter',
+        'update:errorsCount',
+        'update:error',
+        'update:endTask',
+    ],
     methods: {
         pressKey(e) {
             if (e.key === 'Shift') return
 
-            if (e.key === this.$parent.currentLetter) {
-                this.$parent.successCount++
+            if (e.key === this.currentLetter) {
+                this.$emit('update:successCount', this.successCount + 1)
+                this.$emit('update:correctlyLetters', [
+                    ...this.correctlyLetters,
+                    this.currentLetter
+                ])
 
-                this.$parent.correctlyLetters.push(this.$parent.currentLetter)
+                if (this.letters.length > 0) {
+                    let newArrayLetters = this.letters
+                        .filter((letter, index) => index !== 0)
 
-                if (this.$parent.letters.length > 0) {
-                    this.$parent.currentLetter = this.$parent.letters.shift()
+                    this.$emit('update:letters', newArrayLetters)
+                    this.$emit('update:currentLetter', this.letters[0])
                 } else {
-                    this.$parent.currentLetter = ''
-                    this.$parent.endTask = true
+                    this.$emit('update:currentLetter', '')
+                    this.$emit('update:endTask', true)
                 }
-            } else if (
-                this.$parent.error === false
-                && this.$parent.successCount > 0
-            ) {
-                this.$parent.error = true
-                this.$parent.errorsCount++
+            } else if (this.error === false && this.successCount > 0) {
+                this.$emit('update:error', true)
+                this.$emit('update:errorsCount', this.errorsCount + 1)
 
-                setTimeout(() => this.$parent.error = false, 500)
+                setTimeout(() => this.$emit('update:error', false), 500)
             }
         },
     },

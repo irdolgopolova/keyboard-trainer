@@ -1,7 +1,7 @@
 <template>
     <Header
-        v-model:successCount="successCount"
-        v-model:errorsCount="errorsCount"
+        :successCount="successCount"
+        :errorsCount="errorsCount"
         v-model:focusMode="focusMode"
     />
 
@@ -23,6 +23,13 @@
 
             <InteractiveBox
                 v-if="focusMode === false"
+                v-model:successCount="successCount"
+                v-model:letters="letters"
+                v-model:correctlyLetters="correctlyLetters"
+                v-model:currentLetter="currentLetter"
+                v-model:errorsCount="errorsCount"
+                v-model:error="error"
+                v-model:endTask="endTask"
             />
         </div>
     </main>
@@ -76,7 +83,7 @@ export default {
                 currentLetter: this.currentLetter,
                 remainingText: this.letters.join('')
             }
-        }
+        },
     },
     methods: {
         setInitialValues() {

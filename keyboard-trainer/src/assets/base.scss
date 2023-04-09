@@ -119,6 +119,14 @@ body {
   @extend .text;
   color: $c-white-mute;
   text-align: center;
+
+  &:hover {
+    background: $c-blue;
+  }
+
+  &:active {
+    background: $c-dark-blue;
+  }
 }
 
 
